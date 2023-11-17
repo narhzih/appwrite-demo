@@ -1,15 +1,18 @@
 import React from "react";
+import { Oval } from "react-loader-spinner";
 export interface FormProps {
   formTitle: string;
   buttonText?: string;
   onSubmit: any;
   children?: React.ReactNode;
+  isLoading?: boolean;
 }
 export const Form = ({
   formTitle,
   buttonText,
   onSubmit,
   children,
+  isLoading,
 }: FormProps) => {
   return (
     <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -22,9 +25,26 @@ export const Form = ({
             {children}
             <button
               type="submit"
-              className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 border-2 rounded-md"
+              className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 border-2 rounded-md text-center"
             >
-              {buttonText}
+              {isLoading ? (
+                <div className="flex flex-row w-full justify-center items-center">
+                  <Oval
+                    height={25}
+                    width={25}
+                    color="#0166F4"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                    ariaLabel="oval-loading"
+                    secondaryColor="#0166F4"
+                    strokeWidth={2}
+                    strokeWidthSecondary={2}
+                  />
+                </div>
+              ) : (
+                <>{buttonText}</>
+              )}
             </button>
           </form>
         </div>

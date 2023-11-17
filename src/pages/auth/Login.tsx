@@ -5,21 +5,25 @@ import { FormLabel } from "../../components/form/FormLabel";
 import { FormInput } from "../../components/form/FormInput";
 import { toast } from "react-toastify";
 import { account } from "../../lib/appwrite";
+import { Oval } from "react-loader-spinner";
 
 export const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setIsLoading(true);
     if (!email || !password) {
       toast("Please provide a valid email and password", {
         type: "error",
       });
+      setIsLoading(false);
       return;
     }
+    // Try to create account and catch possible errors
     try {
-      // const respnose = await account.create(ID.unique(), email, password);
       const respnose = await account.createEmailSession(email, password);
       toast("Login successful! You'll be redirected shortly!", {
         type: "success",
@@ -27,6 +31,9 @@ export const Login = () => {
       console.log("response ->", respnose);
     } catch (e: any) {
       toast(`Something went wrong:  ${e.message}`, { type: "error" });
+    } finally {
+      // regardless, set the isLoading state back to false
+      setIsLoading(false);
     }
   };
   return (
@@ -34,6 +41,7 @@ export const Login = () => {
       formTitle="Login to your Account"
       onSubmit={handleSubmit}
       buttonText="Login"
+      isLoading={isLoading}
     >
       <div>
         <FormLabel htmlFor="email" labelTitle="Email"></FormLabel>
